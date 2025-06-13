@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="icon" href="coin.png">
+    <title>Coinflip Game</title>
+    <style>
+        :root{
+            --font-size-title: 3rem;
+            --font-size-m: 1.8rem;
+            --font-size-btn: 1rem;
+        }
+        *{
+            margin: 0;
+        }
+        button{
+            padding: 10px 15px;
+            background-color: yellow;
+            border: solid 3px black;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+            font-weight: bold;
+        }
+        html{
+            background-color: orange;
+        }
+        body{
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Press Start 2P", system-ui;
+        }
+        .button-flex{
+            display: flex;
+            width: 300px;
+            gap: 5px;
+        }
+
+        .button1,.button2{
+            flex: 1;
+            font-size: var(--font-size-btn);
+            color: black
+        }
+
+        button:hover{
+            opacity: 0.8;
+        }
+
+        .main-flex{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .main-flex p{
+            color: white;
+            font-weight: bold;
+            font-size: var(--font-size-m);
+            font-family: arial;
+            margin-bottom: 20px;
+        }
+
+        .main-flex h1{
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: var(--font-size-title);
+        }
+
+        .win-lose-flex{
+            display: flex;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .win-flex, .lose-flex{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 900px) {
+            :root{
+                --font-size-title: 2rem;
+                --font-size-m: 1.5rem;
+                --font-size-btn: 0.8rem;
+                }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="main-flex">
+        <h1>COIN FLIP GAME</h1>
+        
+        <dotlottie-player
+        id="toss-animation"
+        src="coin-toss.json"
+        background="transparent"
+        speed="1"
+        style="width: 200px; height: 200px;  transform-origin: center; display: none;"
+        loop
+        ></dotlottie-player>
+        <p id="result"></p>
+        <p id="message"></p>
+        <div class="button-flex">
+         <button id="button1" class="button1" onclick="
+            randomNumber = Math.random();
+            correctGuess = '';
+            playerMove='Heads';
+            processGame();
+            ">
+            Heads
+        </button>
+        <button id="button2" class="button2" onclick="
+            randomNumber = Math.random();
+            correctGuess = '';
+            playerMove='Tails';
+            processGame();
+            ">
+            Tails
+        </button>
+        </div>
+        <div class="win-lose-flex">
+            <div class="win-flex">
+                <span id="win">0</span>
+                <span>Wins</span>
+            </div>
+            <div class="lose-flex">
+                <span id="lose">0</span>
+                <span>Loses</span>
+            </div>
+        </div>
+    </div>
+    <audio id="toss-sound" src="toss-sound.mp3" preload="auto"></audio>
+    <script
+    src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
+    type="module"
+    ></script>
+    <script> 
+        playerMove = '';
+        result = '';
+        win = 0;
+        lose = 0;
+
+        function displayResult(){
+            if(result==='Correct'){
+                document.getElementById('result').innerText = result;
+                win += 1;
+                document.getElementById('win').innerText = win;
+            }
+            else if(result==='Wrong'){
+                document.getElementById('result').innerText = result;
+                document.getElementById('message').innerText = `The correct answer is ${correctGuess}`;
+                lose += 1;
+                document.getElementById('lose').innerText = lose;
+            }
+            
+        }
+        function refreshMessage(){
+            document.getElementById('message').innerText = '';
+        }
+        function generateAndCheckGuess(){
+            randomNumber >=0 && randomNumber<1/2 ? correctGuess='Heads' : correctGuess='Tails';
+            playerMove === correctGuess ? result = 'Correct' : result = 'Wrong';
+        }
+
+        function restrictButtonSpam(){
+            const button1 = document.getElementById('button1');
+            const button2 = document.getElementById('button2');
+
+            button1.disabled = true;
+            button2.disabled = true;
+            button1.style.backgroundColor = 'rgb(119, 79, 5)';
+            button2.style.backgroundColor = 'rgb(119, 79, 5)';
+        }
+
+        function resetButton(){
+            const button1 = document.getElementById('button1');
+            const button2 = document.getElementById('button2');
+
+            button1.disabled = false;
+            button2.disabled = false;
+            button1.style.backgroundColor = 'yellow';
+            button2.style.backgroundColor = 'yellow';
+        }
+
+        function showTossAnimation() {
+        return new Promise((resolve) => {
+            const toss = document.getElementById('toss-animation');
+            restrictButtonSpam();
+            toss.style.display = 'block';
+            playTossSound();
+            toss.play();
+            document.getElementById('button')
+            setTimeout(() => {
+            resolve();
+            }, 1000); 
+        });
+        }
+
+        function hideTossAnimation(){
+            document.getElementById('toss-animation').style.display = 'none';
+        }
+
+        function resetMessage(){
+            document.getElementById('result').innerText = '';
+            document.getElementById('message').innerText = '';
+        }
+
+        function playTossSound(){
+            const tossAudio = document.getElementById('toss-sound');
+            tossAudio.currentTime = 0;
+            tossAudio.play();
+        }
+
+        function mainAlgorithm(){
+            return new Promise((resolve) =>{
+                refreshMessage();
+                generateAndCheckGuess();
+                displayResult();
+                document.getElementById('toss-animation').stop();
+                setTimeout(() => {
+                resolve();
+                }, 2000);
+            });
+        }
+
+        async function processGame(){
+            document.getElementById('toss-animation').play();
+            await showTossAnimation();
+            await mainAlgorithm();
+            hideTossAnimation();
+            resetMessage();
+            resetButton();
+        }
+
+        
+    </script>
+</body>
+</html>
