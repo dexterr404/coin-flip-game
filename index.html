@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="icon" href="coin.png">
+    <link rel="stylesheet" href="styles.css">
+    <title>Flip It!</title>
+    
+</head>
+<body>
+    <div class="main-flex">
+        <h1>COIN FLIP GAME</h1>
+        
+        <dotlottie-player
+        id="toss-animation"
+        src="coin-toss.json"
+        background="transparent"
+        speed="1"
+        style="width: 200px; height: 200px;  transform-origin: center; display: none;"
+        loop
+        ></dotlottie-player>
+        <p id="result"></p>
+        <p id="message"></p>
+        <div class="button-flex">
+         <button id="button1" class="button1">
+            Heads
+        </button>
+        <button id="button2" class="button2">
+            Tails
+        </button>
+        </div>
+        <div class="win-lose-flex">
+            <div class="win-flex">
+                <span id="win">0</span>
+                <span>Wins</span>
+            </div>
+            <div class="lose-flex">
+                <span id="lose">0</span>
+                <span>Loses</span>
+            </div>
+        </div>
+    </div>
+    <audio id="toss-sound" src="toss-sound.mp3" preload="auto"></audio>
+    <script
+    src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
+    type="module"
+    ></script>
+    <script src="script.js"></script>
+</body>
+</html>

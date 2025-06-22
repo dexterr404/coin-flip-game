@@ -1,0 +1,83 @@
+    :root{
+            --font-size-title: 3rem;
+            --font-size-m: 1.8rem;
+            --font-size-btn: 1rem;
+        }
+        *{
+            margin: 0;
+        }
+        button{
+            padding: 10px 15px;
+            background-color: yellow;
+            border: solid 3px black;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+            font-weight: bold;
+        }
+        html{
+            background-color: orange;
+        }
+        body{
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Press Start 2P", system-ui;
+        }
+        .button-flex{
+            display: flex;
+            width: 300px;
+            gap: 5px;
+        }
+
+        .button1,.button2{
+            flex: 1;
+            font-size: var(--font-size-btn);
+            color: black
+        }
+
+        button:hover{
+            opacity: 0.8;
+        }
+
+        .main-flex{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .main-flex p{
+            color: white;
+            font-weight: bold;
+            font-size: var(--font-size-m);
+            font-family: arial;
+            margin-bottom: 20px;
+        }
+
+        .main-flex h1{
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: var(--font-size-title);
+        }
+
+        .win-lose-flex{
+            display: flex;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .win-flex, .lose-flex{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 900px) {
+            :root{
+                --font-size-title: 2rem;
+                --font-size-m: 1.5rem;
+                --font-size-btn: 0.8rem;
+                }
+        }
